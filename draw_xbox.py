@@ -23,7 +23,7 @@ pen.width(3)
 pen.pendown()
 
 # Cursor skins
-shapes = ["classic", "arrow", "turtle", "circle", "square", "triangle"]
+shapes = ["classic", "turtle", "circle", "square", "triangle"]
 shape_index = 0
 pen.shape(shapes[shape_index])
 
@@ -35,39 +35,59 @@ color_index = 0
 DEADZONE = 0.15
 SPEED = 6
 
-a_lock = False   # color
-b_lock = False   # clear
-x_lock = False   # pen up/down
-y_lock = False   # cursor skin
+a_lock = False
+b_lock = False
+x_lock = False
+y_lock = False
+hat_lock = False
 
 pen_is_down = True
+
+# Trigger settings
+lt_lock = False
+fullscreen = False
+
+rt_hold_start = None
+RT_THRESHOLD = 0.5
+
+# ----- DRAW SHAPES -----
+def draw_square(size=80):
+    for _ in range(4):
+        pen.forward(size)
+        pen.right(90)
+
+def draw_triangle(size=80):
+    for _ in range(3):
+        pen.forward(size)
+        pen.right(120)
+
+def draw_hexagon(size=60):
+    for _ in range(6):
+        pen.forward(size)
+        pen.right(60)
 
 # ----- MAIN LOOP -----
 while True:
     pygame.event.pump()
 
-    # LEFT joystick (usually axes 0,1)
+    # LEFT joystick
     lx = js.get_axis(0)
     ly = js.get_axis(1)
 
-    # RIGHT joystick (usually axes 2,3)
+    # RIGHT joystick
     rx = js.get_axis(2)
     ry = js.get_axis(3)
 
-    # Deadzone handling
+    # Deadzone
     if abs(lx) < DEADZONE: lx = 0
     if abs(ly) < DEADZONE: ly = 0
     if abs(rx) < DEADZONE: rx = 0
     if abs(ry) < DEADZONE: ry = 0
 
-    # Combine both sticks
     dx = (lx + rx) * SPEED
     dy = (ly + ry) * SPEED
 
-    pen.goto(
-        pen.xcor() + dx,
-        pen.ycor() - dy
-    )
+    pen.goto(pen.xcor() + dx, pen.ycor() - dy)
 
     # A → change color
     a = js.get_button(0)
@@ -98,7 +118,7 @@ while True:
     if not b:
         b_lock = False
 
-    # Y → change cursor skin
+    # Y → cursor skin
     y_btn = js.get_button(3)
     if y_btn and not y_lock:
         shape_index = (shape_index + 1) % len(shapes)
@@ -106,5 +126,41 @@ while True:
         y_lock = True
     if not y_btn:
         y_lock = False
+
+    # D-PAD (hat)
+    hat = js.get_hat(0)
+    if hat != (0, 0) and not hat_lock:
+        if hat == (0, 1):      # Up
+            pen.circle(50)
+        elif hat == (1, 0):    # Right
+            draw_square()
+        elif hat == (-1, 0):   # Left
+            draw_triangle()
+        elif hat == (0, -1):   # Down
+            draw_hexagon()
+        hat_lock = True
+    if hat == (0, 0):
+        hat_lock = False
+
+    # ----- LEFT TRIGGER (LT) → Fullscreen toggle -----
+    lt = js.get_axis(4)  # usually axis 4
+    if lt > 0.5 and not lt_lock:
+        fullscreen = not fullscreen
+        screen.setup(width=1.0, height=1.0) if fullscreen else screen.setup(width=800, height=600)
+        lt_lock = True
+    if lt <= 0.5:
+        lt_lock = False
+
+    # ----- RIGHT TRIGGER (RT) → Close after 3 seconds -----
+    rt = js.get_axis(5)  # usually axis 5
+    if rt > RT_THRESHOLD:
+        if rt_hold_start is None:
+            rt_hold_start = time.time()
+        elif time.time() - rt_hold_start >= 3:
+            turtle.bye()
+            pygame.quit()
+            break
+    else:
+        rt_hold_start = None
 
     time.sleep(0.01)
