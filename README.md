@@ -5,7 +5,7 @@ this is a python project for drawing with Xbox controller!
 
 requirements:
 python installed (version 3 or Newer)
-pygame installed (pip install pygame)
+pygame installed (https://github.com/pygame/pygame)
 Xbox one/x/s controller connected with bluetooth/ usb (not working with xbox 360 controllers)
 
 
