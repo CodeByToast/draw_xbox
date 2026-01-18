@@ -8,14 +8,23 @@ pygame installed
 Xbox one/x/s controller connected with Bluetooth/ usb (not working with xbox 360 controllers)
 
 how to use:
+
 joysticks- move the cursor 
+
 A- change color 
+
 B- clear board 
+
 X- pen down/up 
+
 Y- change cursor shape (not effecting drawing) 
+
 RB/LB- pen that thickness +/- 
+
 RT for 3 seconds- close 
+
 LT- window/full screen 
+
 dpad- instant shapes 
 
 how it works?
