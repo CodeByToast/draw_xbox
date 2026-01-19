@@ -15,7 +15,7 @@ how to use:
 - B- clear board
 - X- pen down/up
 - Y- change cursor shape (not effecting drawing, just for fun)
-- RB/LB- pen that thickness +/-
+- RB/LB- pen thickness +/-
 - RT for 3 seconds- close
 - LT- window/full screen
 - dpad- instant shapes
