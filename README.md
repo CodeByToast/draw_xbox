@@ -1,6 +1,6 @@
 # draw_xbox
 hi!
-this is a python project for drawing with Xbox controller.
+this is a python project for drawing with Xbox controller!  
 hang tight! it can take some time to load (max 15 seconds)
 
 requirements:
