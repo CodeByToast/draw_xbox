@@ -6,7 +6,7 @@ hang tight! it can take some time to load (max 15 seconds)
 requirements:
 - python installed (version 3 or Newer)
 - pygame installed (https://github.com/pygame/pygame)
-- Xbox one/x/s controller connected with - - bluetooth/ usb (not working with xbox 360 controllers)
+- Xbox one/x/s controller connected with  - bluetooth/ usb (not working with xbox 360 controllers)
 
 how to use:
 - joysticks- move the cursor
